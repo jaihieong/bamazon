@@ -18,42 +18,73 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    showAll();
-
+    // showAll();
+    askUser();
+    connection.end();
     
-    // prompt user
-        // prompt product id
-        // prompt desired purchase qt
 });
 
 function showAll() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log(res);
-        // connection.end();
+        
         askUser();
+        
     });
 };
 
 function askUser() {
+    
     inquirer
         .prompt([
             {
-                name: "identify id",
+                name: "id",
                 type: "input",
                 message: "Enter the item ID of the product you wish to purchase"
             },
             {
-                name: "identify qt",
+                name: "quantity",
                 type: "input",
                 message: "Enter the quantity you wish to purchase"
             }
         ])
         .then(function(answer){
-            checkAvailability(answer);
+            // checkAvailability(answer.id, answer.quantity);
+
+            console.log(answer.id);
+            console.log(answer.quantity);
+
+            var query = 'SELECT * FROM products';
+            connection.query(query, function(err, res) {
+            // if (err) throw err;
+            console.log(res);
+
+            // for (var i = 0; i < res.length; i++){
+            //     if (answer.id === res[i].id){
+            //         console.log(res[i]);
+            //     }
+            // }
+
+            })
+            
         })
 };
 
-function checkAvailability(){
-    console.log("checking product availability");
+function checkAvailability(id, quantity){
+    connection.query("SELECT * FROM products",
+    function(err, res) {
+        // if (err) throw err;
+        console.log(res);
+
+        for (var i = 0; i < res.length; i++){
+            if (id === res[i].id){
+                console.log(res[i])
+            }
+        }
+    })
+    // console.log("checking product availability");
+    // console.log(id);
+    // console.log(quantity);
+    
 };
