@@ -93,6 +93,8 @@ function checkAvailability(id, quantity){
                     console.log("NOT ENOUGH IN STOCK, Please try your order again");
                     console.log("Product selected: " + chosenItem.product_name);
                     console.log("Quantity selected: " + parseInt(quantity));
+
+                    connection.end();
                 } else {
                     // place the order and deduct the ordered quantity from the database for that specific product
                     // console.log(chosenItem);
